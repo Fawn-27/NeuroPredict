@@ -67,7 +67,26 @@ le_encoders = joblib.load('le_encoders.joblib')
 st.set_page_config(page_title="Headache Type Predictor and Management Advisor", layout="centered")
 st.title("Headache Type Predictor and Management Advisor")
 
-st.markdown("<style>.stSuccess{background-color: #627fa1;}</style>", unsafe_allow_html=True)
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #a8bbdc;
+        color: #0d132b;
+    }
+    .stTextInput>div>div>input {
+        background-color: #e0e7ff;
+        color: #0d132b;
+    }
+    .stAlert[data-baseweb="alert"][kind="success"] {
+        background-color: #627fa1;
+        color: #0d132b;
+    }
+    </style>
+""", unsafe_allow_html=True)
+   
+
+# General color setup
+
 
 st.sidebar.header("About")
 st.sidebar.info("""
