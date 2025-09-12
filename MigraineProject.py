@@ -64,36 +64,131 @@ predicted_values = rf.predict(x_test)
 le_encoders = joblib.load('le_encoders.joblib')
 
 #designing the page ------------
-st.set_page_config(page_title="Headache Type Predictor and Management Advisor", layout="centered")
-st.title("Headache Type Predictor and Management Advisor")
+st.set_page_config(page_title="NeuroPredict",  page_icon=None, initial_sidebar_state="collapsed")
+
+st.markdown("""
+    <h1 style='text-align: center; font-family: "DM Sans", sans-serif; color: #415457; font-size:6vw;'>
+        NeuroPredict
+    </h1>
+""", unsafe_allow_html=True)
+st.markdown("""
+    <h2 style='text-align: center; font-family: "DM Sans", sans-serif; color: #768d91; font-size: 2vw;'>
+        ₊˚ ✧ a headache type predictor and management advisor ✧ ₊˚
+    </h2>
+""", unsafe_allow_html=True)
 
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Darker+Grotesque:wght@300..900&family=Manrope:wght@200..800&family=Nixie+One&family=Sora:wght@100..800&family=Stint+Ultra+Expanded&display=swap');
+
     .stApp {
-        background-color: #a8bbdc;
-        color: #0d132b;
+        background-color: #F4F7F8; /*#aebbdc*/
+        color: #2C3E50; /*#0d132b*/
     }
-    .stTextInput>div>div>input {
-        background-color: #e0e7ff;
-        color: #0d132b;
+    
+    h1, h2, h3, h4, h5, h6, stText {
+        color: #3E8E7E;
+        font-family: 'DM Sans', sans-serif;
     }
-    .stAlert[data-baseweb="alert"][kind="success"] {
-        background-color: #627fa1;
-        color: #0d132b;
+            
+    p, label, .stText {
+        color:#3c4e52;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .stSelectbox > div[data-baseweb="select"] > div, input[type="number"] {
+        background-color: #9bb8bd !important;  /* Light mint background */
+        color: #2C3E50 !important;             /* Dark text */
+        border-radius: 0px;
+        font-family: 'DM Sans', sans-serif;
+        margin-bottom:1%;
+        border: 2px dotted #2C3E50 !important; /* Dark border */
+    }
+    div[data-baseweb="input"] {
+        border-radius: 0px !important;
+        background-color: #9bb8bd !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    div[role="combobox"] svg {
+        fill: #3E8E7E !important;
+    }
+    
+    input, select, textarea {
+        border-radius: 0px !important;
+    }
+
+    /* Button Styling */
+    .stButton button {
+        background-color: yellow !important; /* default #6c7f82*/
+        color: white !important;
+        border-radius: 0px !important;
+        padding: 0.6em 1.2em;
+        font-size: 25px !important;
+        font-family: 'DM Sans', sans-serif;
+        transition: background-color 0.3s ease;
+    }
+    .stButton > button:hover {
+        background-color: pink; /* hover */
+        color: #ffffff;
+    }
+    
+    .stTitle, .stSubheader {
+        font-family: "Stint Ultra Expanded", serif;
+        text-align: center;
+    }
+    
+    section[data-testid="stSidebar"] {
+        background-color: #d5e0e3; /* Light mint background for sidebar */
+        color: #2C3E50; /* Dark text for sidebar */
+        font-family: 'DM Sans', sans-serif;
+        border-radius: 0px;
+    }
+    
+    [data-testid="stInfo"] {
+        background-color:transparent !important;
+    }
+    
+    div[data-testid="stNotificationContentSuccess"] {
+        background-color: #8abfa4 !important;
+        border-left: 5px solid #3E8E7E !important;
+        color: #2C3E50 !important;
+        font-family: 'DM Sans', sans-serif;
+    }
+   div[data-baseweb="select"] > div {
+        background-color: #9bb8bd !important;
+        color: #2C3E50 !important;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 16px;
     }
     </style>
 """, unsafe_allow_html=True)
-   
-
-# General color setup
-
 
 st.sidebar.header("About")
 st.sidebar.info("""
 This application predicts the type of headache you may be experiencing based on your symptoms and provides tailored management advice. Please note that this tool is for informational purposes only and does not replace professional medical advice. Always consult a healthcare provider for accurate diagnosis and treatment""")
 
 #taking user input ------------
-st.text("Please provide the following details about your headache:")
+st.markdown("""
+    <style>
+        .intro-box {
+            background-color: #E0F2F1;  /* Light mint */
+            border-left: 6px solid #3E8E7E;  /* Teal accent bar */
+            padding: 16px;
+            border-radius: 0px;
+            color: #3c4e52;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom:2vh;
+        }
+    </style>
+
+    <div class="intro-box">
+        Please provide the following details about your headache.
+    </div>
+""", unsafe_allow_html=True)
 
 headache_days = st.number_input("How many days in the past month have you experienced headaches?", min_value=0, max_value=30)
 
@@ -165,9 +260,30 @@ user_inputs = {
     "conjunctival_injection": conjunctival_injection,
     "miosis": miosis
 }
-st.text("Thank you for providing the details. Click the button below to get your headache type prediction and management advice.")
-if st.button("Predict Headache Type and Get Advice"):
 
+st.markdown("""
+    <style>
+        .thank-you-box {
+            background-color: #E0F2F1;  /* Light mint */
+            border-left: 6px solid #3E8E7E;  /* Teal accent bar */
+            padding: 16px;
+            margin-top: 20px;
+            border-radius: 0px;
+            color: #3c4e52;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom:3vh;
+        }
+    </style>
+
+    <div class="thank-you-box">
+        Thank you for providing the details. Click the button below to get your headache type prediction and management advice.
+    </div>
+""", unsafe_allow_html=True)
+
+
+if st.button("Predict Headache Type and Get Advice"):
     user_df = pd.DataFrame([user_inputs])
     user_encoded = user_df.copy()
 
@@ -197,6 +313,5 @@ if st.button("Predict Headache Type and Get Advice"):
 
     st.subheader(f"Management Advice for {decoded_prediction.capitalize()}:")
     st.write(response.text)
-
 
 #streamlit run MigraineProject.py
