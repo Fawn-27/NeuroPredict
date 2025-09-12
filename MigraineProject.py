@@ -64,7 +64,7 @@ predicted_values = rf.predict(x_test)
 le_encoders = joblib.load('le_encoders.joblib')
 
 #designing the page ------------
-st.set_page_config(page_title="NeuroPredict",  page_icon=None, initial_sidebar_state="collapsed")
+st.set_page_config(page_title="NeuroPredict",  page_icon=None, initial_sidebar_state="collapsed", layout="centered")
 
 st.markdown("""
     <h1 style='text-align: center; font-family: "DM Sans", sans-serif; color: #415457; font-size:6vw;'>
@@ -97,20 +97,21 @@ st.markdown("""
     }
 
     .stSelectbox > div[data-baseweb="select"] > div, input[type="number"] {
-        background-color: #9bb8bd !important;  /* Light mint background */
-        color: #2C3E50 !important;             /* Dark text */
+        background-color: #9bb8bd !important;  
+        color: #2C3E50 !important;         
         border-radius: 0px;
         font-family: 'DM Sans', sans-serif;
         margin-bottom:1%;
-        border: 2px dotted #2C3E50 !important; /* Dark border */
+        border: 2px dotted #2C3E50 !important;
     }
+            
     div[data-baseweb="input"] {
         border-radius: 0px !important;
         background-color: #9bb8bd !important;
         border: none !important;
         box-shadow: none !important;
     }
-
+            
     div[role="combobox"] svg {
         fill: #3E8E7E !important;
     }
@@ -121,7 +122,7 @@ st.markdown("""
 
     /* Button Styling */
     .stButton button {
-        background-color: yellow !important; /* default #6c7f82*/
+        background-color: #7f9599 !important; /* default #6c7f82*/
         color: white !important;
         border-radius: 0px !important;
         padding: 0.6em 1.2em;
@@ -145,15 +146,14 @@ st.markdown("""
         font-family: 'DM Sans', sans-serif;
         border-radius: 0px;
     }
-    
     [data-testid="stInfo"] {
         background-color:transparent !important;
     }
     
     div[data-testid="stNotificationContentSuccess"] {
-        background-color: #8abfa4 !important;
-        border-left: 5px solid #3E8E7E !important;
-        color: #2C3E50 !important;
+        background-color: #6e998a !important;
+        border-left: 10px dotted #465e56 !important;
+        color: white !important;
         font-family: 'DM Sans', sans-serif;
     }
    div[data-baseweb="select"] > div {
