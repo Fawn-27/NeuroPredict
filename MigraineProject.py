@@ -11,8 +11,11 @@ from sklearn.metrics import classification_report, confusion_matrix
 from imblearn.over_sampling import SMOTE
 import joblib
 import google.generativeai as genai
-
 import streamlit as st
+
+genai.configure(api_key="AIzaSyAQkVDq7TLT1D24klQGHW0oaPZMxsfTxT8")
+model=genai.GenerativeModel("gemini-2.5-flash")
+    
 
 #DETEREMINING THE TYPE ------------
 dataset2 = pd.read_csv("Headache Based Data.csv")
@@ -67,122 +70,108 @@ le_encoders = joblib.load('le_encoders.joblib')
 st.set_page_config(page_title="NeuroPredict",  page_icon=None, initial_sidebar_state="collapsed", layout="centered")
 
 st.markdown("""
-    <h1 style='text-align: center; font-family: "DM Sans", sans-serif; color: #415457; font-size:6vw;'>
-        NeuroPredict
-    </h1>
-""", unsafe_allow_html=True)
-st.markdown("""
-    <h2 style='text-align: center; font-family: "DM Sans", sans-serif; color: #768d91; font-size: 2vw;'>
-        ₊˚ ✧ a headache type predictor and management advisor ✧ ₊˚
-    </h2>
+    <h1 style='text-align: center; margin-bottom:0px; font-family: "Cormorant", serif; font-style: italic; color: #0f4662; font-size:7vw;'>✧ NeuroPredict ✧</h1>
+    <h2 style='text-align: center; margin-top:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 3vw;'>your headache type predictor and management advisor</h2>
 """, unsafe_allow_html=True)
 
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Darker+Grotesque:wght@300..900&family=Manrope:wght@200..800&family=Nixie+One&family=Sora:wght@100..800&family=Stint+Ultra+Expanded&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Darker+Grotesque:wght@300..900&family=Manrope:wght@200..800&family=Nixie+One&family=Sora:wght@100..800&family=Stint+Ultra+Expanded&display=swap');
 
     .stApp {
-        background-color: #F4F7F8; /*#aebbdc*/
-        color: #2C3E50; /*#0d132b*/
+        background-color: #f8f8f8; /*#aebbdc*/
+        color: #0f4662; /*#0d132b*/
     }
     
     h1, h2, h3, h4, h5, h6, stText {
-        color: #3E8E7E;
-        font-family: 'DM Sans', sans-serif;
+        color: #0f4662;
+        font-family: 'Manrope', sans-serif;
     }
             
-    p, label, .stText {
+    p, label, stText {
         color:#3c4e52;
-        font-family: 'DM Sans', sans-serif;
+        font-family: 'Manrope', sans-serif;
     }
 
     .stSelectbox > div[data-baseweb="select"] > div, input[type="number"] {
-        background-color: #9bb8bd !important;  
-        color: #2C3E50 !important;         
-        border-radius: 0px;
-        font-family: 'DM Sans', sans-serif;
+        background-color: #dbe5ea !important;  
+        color: #0f4662;         
+        /*border-radius: 0px;*/
+        font-family: 'Manrope', sans-serif;
         margin-bottom:1%;
-        border: 2px dotted #2C3E50 !important;
-    }
-            
-    div[data-baseweb="input"] {
-        border-radius: 0px !important;
-        background-color: #9bb8bd !important;
-        border: none !important;
-        box-shadow: none !important;
-    }
-            
-    div[role="combobox"] svg {
-        fill: #3E8E7E !important;
-    }
-    
-    input, select, textarea {
-        border-radius: 0px !important;
-    }
-
-    /* Button Styling */
-    .stButton button {
-        background-color: #7f9599 !important; /* default #6c7f82*/
-        color: white !important;
-        border-radius: 0px !important;
-        padding: 0.6em 1.2em;
-        font-size: 25px !important;
-        font-family: 'DM Sans', sans-serif;
-        transition: background-color 0.3s ease;
-    }
-    .stButton > button:hover {
-        background-color: pink; /* hover */
-        color: #ffffff;
-    }
-    
-    .stTitle, .stSubheader {
-        font-family: "Stint Ultra Expanded", serif;
-        text-align: center;
     }
     
     section[data-testid="stSidebar"] {
-        background-color: #d5e0e3; /* Light mint background for sidebar */
-        color: #2C3E50; /* Dark text for sidebar */
-        font-family: 'DM Sans', sans-serif;
-        border-radius: 0px;
+        background-color: #dbe5ea; /* Light mint background for sidebar */
+        color: #0f4662; /* Dark text for sidebar */
+        font-family: 'Manrope', sans-serif;
     }
+            
+    section[data-testid="stSidebar"] [data-widget-key="title_sidebar"] {
+        font-family: 'Manrope', sans-serif !important;
+    }
+            
     [data-testid="stInfo"] {
         background-color:transparent !important;
     }
     
     div[data-testid="stNotificationContentSuccess"] {
-        background-color: #6e998a !important;
+        background-color: #a9becb !important;
         border-left: 10px dotted #465e56 !important;
-        color: white !important;
-        font-family: 'DM Sans', sans-serif;
+        color: #0f4662 !important;
+        font-family: 'Manrope', sans-serif;
     }
    div[data-baseweb="select"] > div {
-        background-color: #9bb8bd !important;
-        color: #2C3E50 !important;
-        font-family: 'DM Sans', sans-serif;
+        background-color: #7994a0 !important;
+        color: #0f4662 !important;
+        font-family: 'Manrope', sans-serif;
         font-size: 16px;
+        border-bottom: 4px solid #0f4662;
+    }
+
+    .stButton > button:hover {
+        background-color: #7994a0 !important; /* Darker on hover */
+        font_size:26px;
+        color:white !important;
+    }
+            
+    </style>
+    """, unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <style>
+    /* Target sidebar header */
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 , section[data-testid="stSidebar"] h4,
+    section[data-testid="stSidebar"] h5,
+    section[data-testid="stSidebar"] h6, section[data-testid="stSidebar"] p {
+        color: #0f4662 !important;  
+        font-family: 'Manrope', sans-serif !important;
+        text-align:left !important;
     }
     </style>
-""", unsafe_allow_html=True)
-
-st.sidebar.header("About")
-st.sidebar.info("""
-This application predicts the type of headache you may be experiencing based on your symptoms and provides tailored management advice. Please note that this tool is for informational purposes only and does not replace professional medical advice. Always consult a healthcare provider for accurate diagnosis and treatment""")
+    """,
+    unsafe_allow_html=True
+)
 
 #taking user input ------------
 st.markdown("""
     <style>
         .intro-box {
-            background-color: #E0F2F1;  /* Light mint */
-            border-left: 6px solid #3E8E7E;  /* Teal accent bar */
+            background-color: #a9becb;  /* Light mint */
+            border-left: 6px solid #0f4662;  /* Teal accent bar */
             padding: 16px;
             border-radius: 0px;
-            color: #3c4e52;
-            font-family: 'DM Sans', sans-serif;
+            color: #0f4662;
+            font-family: 'Manrope', sans-serif;
             font-size: 16px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             margin-bottom:2vh;
+            text-align:center;
         }
+
     </style>
 
     <div class="intro-box">
@@ -190,7 +179,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-headache_days = st.number_input("How many days in the past month have you experienced headaches?", min_value=0, max_value=30)
+headache_days = st.number_input("How many days in the past month have you experienced headaches?", min_value=0, max_value=30, key="headache_days")
 
 characterisation = st.selectbox("Could you describe your headache sensation?", ["Pressing -- like a tight band squeezing around my head", "Pulsating -- a rhythmic beating that comes and goes, sometimes with my heartbeat", "Throbbing -- a heavy, pounding sensation that feels like my head is pulsing with pressure", "Stabbing - sharp, sudden jabs of pain that feel like being poked with a needle or knife"])[0]
 if characterisation == "Pressing -- like a tight band squeezing around my head":
@@ -264,26 +253,41 @@ user_inputs = {
 st.markdown("""
     <style>
         .thank-you-box {
-            background-color: #E0F2F1;  /* Light mint */
-            border-left: 6px solid #3E8E7E;  /* Teal accent bar */
+            background-color: #a9becb;  /* Light mint */
+            border-left: 6px solid #0f4662;  /* Teal accent bar */
             padding: 16px;
             margin-top: 20px;
             border-radius: 0px;
-            color: #3c4e52;
-            font-family: 'DM Sans', sans-serif;
+            color: #0f4662;
+            font-family: 'Manrope', sans-serif;
             font-size: 16px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             margin-bottom:3vh;
+            text-align:center;
         }
     </style>
 
     <div class="thank-you-box">
-        Thank you for providing the details. Click the button below to get your headache type prediction and management advice.
+        Thank you! Click the button below to get your headache type prediction and management advice.
     </div>
 """, unsafe_allow_html=True)
 
+st.markdown("""<style>
+            .stButton button {
+        background-color: #a9becb !important; 
+        color: white !important;
+        padding: 0.6em 1.2em;
+        font-size: 25px !important;
+        font-family: 'Manrope', sans-serif;
+        transition: background-color 0.3s ease;
+            display:block;
+            margin:auto;
+    }
 
-if st.button("Predict Headache Type and Get Advice"):
+            </style>
+""", unsafe_allow_html=True)
+
+if st.button("Predict Headache Type and Get Advice", key="predict_button"):
     user_df = pd.DataFrame([user_inputs])
     user_encoded = user_df.copy()
 
@@ -296,14 +300,12 @@ if st.button("Predict Headache Type and Get Advice"):
     decoded_prediction = class_le.inverse_transform([prediction[0]])[0]
 
     #migraine --> 1, sinus --> 2, tension --> 3, cluster --> 0
-    st.subheader("Predicted Headache Type:")
+    st.markdown("""<h2 style='text-align: center; margin-bottom:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 1.5vw;'>━━━━⊱⋆⊰━━━━</h2>""", unsafe_allow_html=True)
+    st.markdown("""
+    <h2 style='text-align: center; margin-bottom:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 1.5vw;'>Predicted Headache Type:</h2>""", unsafe_allow_html=True)
     st.success(f"{decoded_prediction.capitalize()}")
 
-
     #LLM PART OF THE PROJECT -----------------------------
-    genai.configure(api_key="AIzaSyAQkVDq7TLT1D24klQGHW0oaPZMxsfTxT8")
-    model=genai.GenerativeModel("gemini-2.5-flash")
-
     prompt = f'''
     Explain {decoded_prediction} Generate a clear, structured, and medically relevant response that does not stray from the topic of headache management. The output must include: (1) a list of home remedies tailored to the identified headache type, starting with simple and commonly manageable options, then progressing to more intensive measures only if appropriate; (2) a set of official or medically recognized remedies and management strategies, organized from standard/common recommendations to those used for severe cases; and (3) a list of recommended medications suitable for {decoded_prediction}, with a clear distinction between over-the-counter medicines and prescription-only options available at a pharmacy. All information should be concise, practical, and directly related to the headache type, avoiding unrelated advice or general health information. Remedies and medications must be presented with brief explanations or usage notes where relevant to ensure clarity, while avoiding speculation or unverified treatments.
     '''
@@ -312,6 +314,28 @@ if st.button("Predict Headache Type and Get Advice"):
         response=model.generate_content(prompt)
 
     st.subheader(f"Management Advice for {decoded_prediction.capitalize()}:")
+    
     st.write(response.text)
 
-#streamlit run MigraineProject.py
+placeholder = st.sidebar.empty()
+
+st.sidebar.header("About")
+st.sidebar.write("""
+This application predicts the type of headache you may be experiencing based on your symptoms and provides tailored management advice. Please note that this tool is for informational purposes only and does not replace professional medical advice. Always consult a healthcare provider for accurate diagnosis and treatment""")
+
+st.sidebar.header("Developer")
+st.sidebar.write("""Hi, I'm Mansi, a high school student passionate about the intersection of cogntiive science, healthcare, and AI. This project combines machine learning and large language models to help people understand and manage headaches better. Feel free to reach out if you have any questions or feedback!""")
+
+st.sidebar.header("Lifehacks!")
+st.sidebar.markdown("""
+Want to avoid headaches? Here are 3 top lifehacks for a healthy life:
+""", unsafe_allow_html=True)
+
+life_hacks = f'''
+    List 3 science-backed, practical lifehack to prevent headaches and support a healthy lifestyle—clear, engaging/#entertaining, and easy to apply daily.
+'''
+with st.sidebar:
+    with st.spinner("Generating life hacks.."):
+        hacks=model.generate_content(life_hacks)
+
+st.sidebar.write(hacks.text)
