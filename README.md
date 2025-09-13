@@ -1,7 +1,14 @@
-# Description
-* NeuroPredict’s a data-driven classification model and LLM that can predict the type of headache based on user-reported symptoms and provide medical assistance.
-* Headaches are a ubiquitous, and sometimes, debilitating medical issue, affecting countless people throughout the world. Each headache disorder, from sinus headaches to migraines, share overlapping symptoms, posing the risk for an inaccurate self-diagnosis. Put simply, there’s a need for a reliable, objective system that can accurately differentiate between common headache types.
-* To deal with this issue, NeuroPredict not only predicts the type of headache, but also provides a series of potential solutions that can then provide a patient with home remedies or advise them to seek professional medical help. 
+# NeuroPredict: Your Personal Headache Assistant 🧠
+
+## About the Project:
+* Headaches are a common, and often debilitating, medical issue. With so many types, from migraines to sinus headaches, the overlapping symptoms can make self-diagnosis a real challenge.
+* NeuroPredict is a data-driven classification model and large language model (LLM) designed to solve this problem. It accurately predicts the type of headache a user is experiencing based on reported symptoms. Beyond diagnosis, it provides actionable advice, including home remedies or recommendations to seek professional medical help.
+
+## Features
+* Accurate Classification: A classification model that differentiates between common headache types.
+* LLM Integration: An LLM that provides potential solutions based on the predicted headache type.
+* User-Friendly Interface: An accessible application built with Streamlit for a seamless user experience.
 
 # Usage
-Click on this [link](https://migraine-detection-and-classifier.streamlit.app/) to view the project.
+* You can test the live application here: [https://migraine-detection-and-classifier.streamlit.app/](https://migraine-detection-and-classifier.streamlit.app/)
+* Feel free to explore the code, contribute to the project, or provide feedback.
