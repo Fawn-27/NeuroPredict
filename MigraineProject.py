@@ -70,7 +70,7 @@ le_encoders = joblib.load('le_encoders.joblib')
 st.set_page_config(page_title="NeuroPredict",  page_icon=None, initial_sidebar_state="collapsed", layout="centered")
 
 st.markdown("""
-    <h1 style='text-align: center; margin-bottom:0px; font-family: "Cormorant", serif; font-style: italic; color: #0f4662; font-size:7vw;'>✧ NeuroPredict ✧</h1>
+    <h1 style='text-align: center; margin-bottom:0px; font-family: "Cormorant", serif; font-style: italic; color: #0f4662; font-size:7vw;'>NeuroPredict</h1>
     <h2 style='text-align: center; margin-top:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 3vw;'>your headache type predictor and management advisor</h2>
 """, unsafe_allow_html=True)
 
