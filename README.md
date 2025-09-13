@@ -1,5 +1,7 @@
-##Description
-NeuroPredict’s a data-driven classification model and LLM that can predict the type of headache based on user-reported symptoms, educate users with structured, medically relevant information, and offer guidance on home remedies, clinical management, and medication options. Headaches are a ubiquitous, and sometimes, debilitating medical issue, affecting countless people throughout the world. Each headache disorder, from sinus headaches to migraines, share overlapping symptoms, posing the risk for an inaccurate self-diagnosis. Put simply, there’s a need for a reliable, objective system that can accurately differentiate between common headache types. To deal with this issue, NeuroPredict not only predicts the type of headache, but also provides a series of potential solutions that can then provide a patient with home remedies or advise them to seek professional medical help. 
+#Description
+* NeuroPredict’s a data-driven classification model and LLM that can predict the type of headache based on user-reported symptoms and provide medical assistance.
+* Headaches are a ubiquitous, and sometimes, debilitating medical issue, affecting countless people throughout the world. Each headache disorder, from sinus headaches to migraines, share overlapping symptoms, posing the risk for an inaccurate self-diagnosis. Put simply, there’s a need for a reliable, objective system that can accurately differentiate between common headache types.
+* To deal with this issue, NeuroPredict not only predicts the type of headache, but also provides a series of potential solutions that can then provide a patient with home remedies or advise them to seek professional medical help. 
 
-##Usage
+#Usage
 Click on this [link](https://migraine-detection-and-classifier.streamlit.app/) to view the project.
