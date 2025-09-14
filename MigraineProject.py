@@ -15,7 +15,6 @@ import streamlit as st
 
 genai.configure(api_key="AIzaSyAQkVDq7TLT1D24klQGHW0oaPZMxsfTxT8")
 model=genai.GenerativeModel("gemini-2.5-flash")
-    
 
 #DETEREMINING THE TYPE ------------
 dataset2 = pd.read_csv("Headache Based Data.csv")
@@ -54,6 +53,7 @@ categorical_column = x.select_dtypes(include=["object"]).columns
 #training the model ------------
 x_train, x_test, y_train, y_test = train_test_split(x_encoded, y_encoded, test_size=0.2, random_state=42, stratify=y_encoded)
 
+
 smote = SMOTE(random_state=42)
 x_resampled, y_resampled = smote.fit_resample(x_train, y_train)
 
@@ -70,7 +70,7 @@ le_encoders = joblib.load('le_encoders.joblib')
 st.set_page_config(page_title="NeuroPredict",  page_icon=None, initial_sidebar_state="collapsed", layout="centered")
 
 st.markdown("""
-    <h1 style='text-align: center; margin-bottom:0px; font-family: "Cormorant", serif; font-style: italic; color: #0f4662; font-size:7vw;'>NeuroPredict</h1>
+    <h1 style='text-align: center; margin-bottom:0px; font-family: "Cormorant", serif; font-style: italic; color: #0f4662; font-size:7vw;'>✧NeuroPredict✧</h1>
     <h2 style='text-align: center; margin-top:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 3vw;'>your headache type predictor and management advisor</h2>
 """, unsafe_allow_html=True)
 
@@ -121,6 +121,7 @@ st.markdown("""
         color: #0f4662 !important;
         font-family: 'Manrope', sans-serif;
     }
+            
    div[data-baseweb="select"] > div {
         background-color: #7994a0 !important;
         color: #0f4662 !important;
@@ -175,39 +176,95 @@ st.markdown("""
     </style>
 
     <div class="intro-box">
-        Please provide the following details about your headache.
+        Please provide the following details about your headache. If you don't select an option, it'll be considered as the first option.
     </div>
 """, unsafe_allow_html=True)
 
+
+
 headache_days = st.number_input("How many days in the past month have you experienced headaches?", min_value=0, max_value=30, key="headache_days")
 
-characterisation = st.selectbox("Could you describe your headache sensation?", ["Pressing -- like a tight band squeezing around my head", "Pulsating -- a rhythmic beating that comes and goes, sometimes with my heartbeat", "Throbbing -- a heavy, pounding sensation that feels like my head is pulsing with pressure", "Stabbing - sharp, sudden jabs of pain that feel like being poked with a needle or knife"])[0]
-if characterisation == "Pressing -- like a tight band squeezing around my head":
+
+characterisation_options = [
+    "-- Select an option --",
+    "Pressing -- like a tight band squeezing around my head",
+    "Pulsating -- a rhythmic beating that comes and goes, sometimes with my heartbeat",
+    "Throbbing -- a heavy, pounding sensation that feels like my head is pulsing with pressure",
+    "Stabbing - sharp, sudden jabs of pain that feel like being poked with a needle or knife"
+]
+characterisation = st.selectbox("What best describes how your headache feels", characterisation_options, index=0)
+if characterisation == characterisation_options[0]:
+    characterisation="pressing"
+elif "Pressing" in characterisation:
     characterisation = "pressing"
-elif characterisation == "Pulsating -- a rhythmic beating that comes and goes, sometimes with my heartbeat":
+elif "Pulsating" in characterisation:
     characterisation = "pulsating"
-elif characterisation == "Throbbing -- a heavy, pounding sensation that feels like my head is pulsing with pressure":
+elif "Throbbing" in characterisation:
     characterisation = "throbbing"
-else:
+elif "Stabbing" in characterisation:
     characterisation = "stabbing"
 
-nausea = st.selectbox("Are you experiencing any nausea?", ["yes", "no"])
-photophobia = st.selectbox("Are you experiencing any sensitivity to light?", ["yes", "no"])
-phonophobia = st.selectbox("Are your ears sensitive to sound during the headache?", ["yes", "no"])
+nausea_options = ["-- Select an option --", "Yes", "No"]
+nausea = st.selectbox("Are you experiencing any nausea?", nausea_options, index=0)
+if nausea == nausea_options[0]:
+    nausea="yes"
+elif "Yes" in nausea:
+    nausea = "yes"
+elif "No" in nausea:
+    nausea = "no"
 
-severity = st.selectbox("How severe is your pain?", ["Mild -- The pain is noticeable but doesn't interfere with daily activities. You can functionally normally without needing rest or medication.", "Moderate -- The pain is uncomfortable and distracting. It may interfere with your concentration or daily tasks, and you may feel the need to lie down or take medication.", "Severe -- The pain is intense and debilitating. It significantly limits your ability to perform daily activities, and you likely need to rest in a dark, quiet room and take strong medication to manage the pain."])[0]
-if severity == "Mild -- The pain is noticeable but doesn't interfere with daily activities. You can functionally normally without needing rest or medication.":
+photophobia_options = ["-- Select an option --", "Yes", "No"]
+photophobia = st.selectbox("Are you experiencing any sensitivity to light?", photophobia_options, index=0)
+if photophobia == photophobia_options[0]:
+    photophobia="yes"
+elif "Yes" in photophobia:
+    photophobia = "yes"
+elif "No" in photophobia:
+    photophobia = "no"
+
+phonophobia_options = ["-- Select an option --", "Yes", "No"]
+phonophobia = st.selectbox("Are your ears sensitive to sound during the headache?", phonophobia_options, index=0)
+if phonophobia == phonophobia_options[0]:
+    phonophobia="yes"
+elif "Yes" in phonophobia:
+    phonophobia = "yes"
+elif "No" in phonophobia:
+    phonophobia = "no"
+
+severity_options = ["-- Select an option --", "Mild -- The pain is noticeable but doesn't interfere with daily activities. You can functionally normally without needing rest or medication.", "Moderate -- The pain is uncomfortable and distracting. It may interfere with your concentration or daily tasks, and you may feel the need to lie down or take medication.", "Severe -- The pain is intense and debilitating. It significantly limits your ability to perform daily activities, and you likely need to rest in a dark, quiet room and take strong medication to manage the pain."]
+severity = st.selectbox("How severe is your pain?", severity_options, index=0)[0]
+if severity == severity_options[0]:
+    severity="mild"
+elif severity == "Mild -- The pain is noticeable but doesn't interfere with daily activities. You can functionally normally without needing rest or medication.":
     severity = "mild"
 elif severity == "Moderate -- The pain is uncomfortable and distracting. It may interfere with your concentration or daily tasks, and you may feel the need to lie down or take medication.":
     severity = "moderate"
 else:
     severity = "severe"
 
-pericranial = st.selectbox("Do the muscles around your temples, neck, or scalp feel tender or sore?", ["yes", "no"])
-aggravation = st.selectbox("Does anything like movement, noise, or light make your headache worse?", ["yes", "no"])
+pericranial_options = ["-- Select an option --", "Yes", "No"]
+pericranial = st.selectbox("Do the muscles around your temples, neck, or scalp feel tender or sore?", pericranial_options, index=0)
+if pericranial == pericranial_options[0]:
+    pericranial="yes"
+elif "Yes" in pericranial:
+    pericranial = "yes"
+elif "No" in pericranial:
+    pericranial = "no"
 
-location= st.selectbox("Where is your headache pain mainly located?", ["Both sides (bilateral)", "Forehead", "Around or behind the eye (orbital)", "One side only (unilateral)"])[0]
-if location == "Both sides (bilateral)":
+aggravation_options = ["-- Select an option --", "Yes", "No"]   
+aggravation = st.selectbox("Does anything like movement, noise, or light make your headache worse?", aggravation_options, index=0)
+if aggravation == aggravation_options[0]:
+    aggravation="yes"
+elif "Yes" in aggravation:
+    aggravation = "yes"
+elif "No" in aggravation:
+    aggravation = "no"
+
+location_options = ["-- Select an option --", "Both sides (bilateral)", "Forehead", "Around or behind the eye (orbital)", "One side only (unilateral)"]
+location= st.selectbox("Where is your headache pain mainly located?", location_options, index=0)[0]
+if location == location_options[0]:
+    location="bilateral"
+elif location == "Both sides (bilateral)":
     location = "bilateral"
 elif location == "Forehead":
     location = "forehead"
@@ -216,8 +273,11 @@ elif location == "Around or behind the eye (orbital)":
 else:
     location = "unilateral"
 
-aura_duration= st.selectbox("If you experience visual or sensory disturbances (aura) before your headache, how long do they usually last?", ["No aura", "Around 5-30 minutes", "Around 1-4 hours", "4+ hours, a day, or longer"])[0]
-if aura_duration == "No aura":
+aura_duration_options = ["-- Select an option --", "No aura", "Around 5-30 minutes", "Around 1-4 hours", "4+ hours, a day, or longer"]
+aura_duration= st.selectbox("If you experience visual or sensory disturbances (aura) before your headache, how long do they usually last?", aura_duration_options, index=0)[0]
+if aura_duration == aura_duration_options[0]:
+    aura_duration="none"
+elif aura_duration == "No aura":
     aura_duration = "none"
 elif aura_duration == "Around 5-30 minutes": 
     aura_duration = "minutes"
@@ -226,11 +286,50 @@ elif aura_duration == "Around 1-4 hours":
 else:
     aura_duration = "day"
 
-rhinorrhoea = st.selectbox("Do you have a runny nose with your headache?", ["yes", "no"])
-hemiplegic = st.selectbox("Have you experienced temporary weakness or paralysis on one side of your body during the headache?", ["yes", "no"])
-vomitting = st.selectbox("Have you vomitted during this headache episode?", ["yes", "no"])
-conjunctival_injection = st.selectbox("Have the whites of your eyes appeared red or bloodshot during the headache?", ["yes", "no"])
-miosis = st.selectbox("Have you noticed one of your pupils becoming unusually small?", ["yes", "no"])
+rhinorrhoea_options = ["-- Select an option --","Yes", "No"]
+rhinorrhoea = st.selectbox("Do you have a runny nose with your headache?", rhinorrhoea_options, index=0)
+if rhinorrhoea == rhinorrhoea_options[0]: 
+    rhinorrhoea="yes"
+elif "Yes" in rhinorrhoea:
+    rhinorrhoea = "yes"
+elif "No" in rhinorrhoea:
+    rhinorrhoea = "no"
+
+hemiplegic_options = ["-- Select an option --", "Yes", "No"]
+hemiplegic = st.selectbox("Have you experienced temporary weakness or paralysis on one side of your body during the headache?", hemiplegic_options, index=0)
+if hemiplegic == hemiplegic_options[0]:
+    hemiplegic="yes"
+elif "Yes" in hemiplegic:
+    hemiplegic = "yes"
+elif "No" in hemiplegic:
+    hemiplegic = "no"
+
+vomitting_options = ["-- Select an option --", "Yes", "No"]
+vomitting = st.selectbox("Have you vomitted during your headache?", vomitting_options, index=0)
+if vomitting == vomitting_options[0]:
+    vomitting="yes"
+elif "Yes" in vomitting:
+    vomitting = "yes"
+elif "No" in vomitting:
+    vomitting = "no"
+
+conjunctival_injection_options = ["-- Select an option --", "Yes", "No"]
+conjunctival_injection = st.selectbox("Have the whites of your eyes appeared red or bloodshot during the headache?", conjunctival_injection_options, index=0)
+if conjunctival_injection == conjunctival_injection_options[0]:
+    conjunctival_injection="yes"
+elif "Yes" in conjunctival_injection:
+    conjunctival_injection = "yes"
+elif "No" in conjunctival_injection:
+    conjunctival_injection = "no"
+
+miosis_options = ["-- Select an option --", "Yes", "No"]
+miosis = st.selectbox("Have you noticed one of your pupils becoming unusually small?", miosis_options, index=0)
+if miosis == miosis_options[0]:
+    miosis="yes"
+elif "Yes" in miosis:
+    miosis = "yes"
+elif "No" in miosis:
+    miosis = "no"
 
 user_inputs = {
     "headache_days": headache_days,
@@ -302,7 +401,7 @@ if st.button("Predict Headache Type and Get Advice", key="predict_button"):
     #migraine --> 1, sinus --> 2, tension --> 3, cluster --> 0
     st.markdown("""<h2 style='text-align: center; margin-bottom:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 1.5vw;'>━━━━⊱⋆⊰━━━━</h2>""", unsafe_allow_html=True)
     st.markdown("""
-    <h2 style='text-align: center; margin-bottom:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 1.5vw;'>Predicted Headache Type:</h2>""", unsafe_allow_html=True)
+    <h2 style='text-align: center; margin-bottom:0px;font-family: "Cormorant", serif; color: #637f8b; font-style:italic;font-size: 3vh;'>Predicted Headache Type:</h2>""", unsafe_allow_html=True)
     st.success(f"{decoded_prediction.capitalize()}")
 
     #LLM PART OF THE PROJECT -----------------------------
